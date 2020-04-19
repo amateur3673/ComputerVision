@@ -143,7 +143,7 @@ def relocalize_keypoints_octave(DoG_octave_keypoint,DoG_octave,contrast_thr=0.03
         first_diff,second_diff=calculate_derivatives(DoG_octave,x,y,s)
         x_hat = -np.linalg.pinv(second_diff).dot(first_diff) #calculate the x_hat in the paper
         contrast=DoG_octave[y,x,s]+0.5*first_diff.T.dot(x_hat) #Calculate the D(x_hat) in the paper
-        if(contrast[0,0]<contrast_thr):continue #Remove low contrast
+        if(np.abs(contrast[0,0])<contrast_thr):continue #Remove low contrast
         else:
             #Remove the edge response
             Hessian=second_diff[:2,:2] #Retrieve the Hessian matrix
