@@ -1,7 +1,5 @@
 import numpy as np
 import cv2
-img=cv2.imread('Images/IMG_0851.JPG')
-img=cv2.resize(img,(400,400))
 def _nearest_interpolation(img,pos):
     if(len(img.shape)==3):return img[int(pos[0]),int(pos[1]),:]
     else: return img[int(pos[0]),int(pos[1])]
@@ -221,8 +219,14 @@ class shear_transform:
             for x in range(img.shape[1]):
                 coord=np.array([[x-center[1]],[y-center[0]],[1]])
                 old_coord=inv_shear_mat.dot(coord)
-                pos=(old_coord[1]+center[0],old_coord[0]+center[1])
+                pos=(old_coord[1,0]+center[0],old_coord[0,0]+center[1])
                 if(pos[0]>=0 and pos[0]<img.shape[0] and pos[1]>=0 and pos[1]<img.shape[1]):
                     if(interpolation=='NEAREST'):new_img[y,x]=_nearest_interpolation(img,pos)
                     elif(interpolation=='BILINEAR'):new_img[y,x]=_bilinear_interpolation(img,pos)
         return new_img
+if __name__=='__main__':
+    img=cv2.imread('Images/IMG_0851.JPG')
+    img=cv2.resize(img,(400,400))
+    shear=shear_transform(img,(200,200),(1,0.25),interpolation='BILINEAR')
+    cv2.imshow('image',shear.transform_img)
+    cv2.waitKey(0)
