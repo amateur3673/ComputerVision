@@ -248,6 +248,44 @@ def assign_segment(img,k=500):
                     segmented_image[node[0],node[1],c]=color[j%4]
                 j+=1
     return segmented_image
+def retrieve_full_components(img,k=20000):
+    components=[]
+    for c in range(3):
+        forest=form_component(img[:,:,c],k)
+        components.append(retrieve_component(forest))
+    # Here we've got 3 dictionary for storing components in each channel
+    # our task from now is combined 3 channel to extract components for the whole image
+    # We create 3D matrix for storing component index of each channel in 3 channels
+    mat=np.zeros((img.shape[0],img.shape[1],3)).astype(int)
+    for c in range(3):
+        index=1
+        for _,component in components[c].items():
+            for pos in component:
+                mat[pos[0],pos[1],c]=index
+            index+=1
+    combined_components={0:[(0,0)]}
+    index=1
+    for y in range(img.shape[0]):
+        for x in range(img.shape[1]):
+           comp_idx=0
+           flag=True
+           while(comp_idx<index):
+                first_pos=combined_components[comp_idx][0]
+                if(mat[y,x,0]==mat[first_pos[0],first_pos[1],0] and mat[y,x,1]==mat[first_pos[0],first_pos[1],1] and mat[y,x,2]==mat[first_pos[0],first_pos[1],2]):
+                   combined_components[comp_idx].append((y,x))
+                   flag=False;break
+                comp_idx+=1
+           if(flag):
+                combined_components[index]=[(y,x)]
+                index+=1
+    return combined_components
+def write_to_file(components,filename='result.txt'):
+    with open(filename,'w') as f:
+        for comp_idx,comp in components.items():
+            f.write(str(comp_idx)+' ')
+            for pos in comp:
+                f.write(str(pos[0])+','+str(pos[1])+' ')
+            f.write('\n')
 def main(image_path='Images/Figure3.jpeg'):
     img=cv2.imread(image_path)
     img=img[:,:,::-1]
@@ -255,6 +293,17 @@ def main(image_path='Images/Figure3.jpeg'):
     segmented_image=assign_segment(img,k=20000)
     return segmented_image
 if __name__=='__main__':
-    segmented_image=main()
+    '''segmented_image=main()
     plt.imshow(segmented_image)
-    plt.show()
+    plt.show()'''
+    img=cv2.imread('Images/Figure10.jpg')
+    img=gaussian_filter(img,sigma=0.8,kernel_size=5)
+    components=retrieve_full_components(img,k=500)
+    write_to_file(components,filename='result2.txt')
+    segmented_image=np.zeros_like(img).astype(np.uint8)
+    color=np.array([[10,10,10],[20,50,75],[40,90,150],[130,180,230],[180,90,60],[220,245,70]])
+    for comp_idx,comp in components.items():
+        for pos in comp:
+            segmented_image[pos[0],pos[1],:]=color[comp_idx%6]
+    cv2.imshow('image',segmented_image)
+    cv2.waitKey(0)
