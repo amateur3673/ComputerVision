@@ -6,10 +6,11 @@ You can find the paper [here](http://www.huppelen.nl/publications/selectiveSearc
 
 File structure:
 - ``Images``: Folder of image input
-- ``result`` files: collected from Graph Segmentation for initial components.
+- ``result`` files: collected from Graph Segmentation for initial components: ``result1`` for Figure1,``result3`` for Figure10.
 - ``img_transform.py``: for image rotating, takes from ``Image_Transform``.
 - ``source.py``: source code of this project.
 - ``Segmentation_Image``: segmentation image result.
+- ``SelectiveSearch.ipynb``: notebook of this project.
 
 **Bottleneck**:
 

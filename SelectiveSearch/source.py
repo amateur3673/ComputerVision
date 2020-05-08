@@ -303,15 +303,15 @@ class Hierarchical:
     '''
     Conduct Hierarchical Grouping Stategy
     '''
-    def __init__(self,img,file_name='result.txt'):
+    def __init__(self,img,merge=True,file_name='result.txt'):
         # Initialize 4 similarities matrix
-        self.setup(img,file_name)
-    def setup(self,img,file_name='result.txt'):
+        self.setup(img,merge,file_name)
+    def setup(self,img,merge=True,file_name='result.txt'):
         print('Set up for Selective Search ...')
         img_comp,self.list_comp=retrieve_components(img,file_name)
         '''self.list_comp=list_comp'''
         self.neighbor_mat=find_neighbors(img_comp,len(self.list_comp))
-        self.list_comp,self.neighbor_mat=initial_merge(self.list_comp,self.neighbor_mat)
+        if(merge):self.list_comp,self.neighbor_mat=initial_merge(self.list_comp,self.neighbor_mat)
         self.color_sim=ColorSimilarity(self.neighbor_mat.shape)
         self.texture_sim=TextureSimilarity(self.neighbor_mat,img)
         self.size_sim=SizeSimilarity(self.neighbor_mat)
@@ -442,50 +442,3 @@ def initial_merge(list_comp,neighbor_mat):
             if(flag):idx+=1
         else:idx+=1
     return list_comp,neighbor_mat
-if __name__=='__main__':
-    img=cv2.imread('Images/Figure10.jpg')
-    ssearch=Hierarchical(img,file_name='result3.txt')
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    cv2.imwrite('Segmented_Image/Figure10_first_segment.png',segmented_img)
-
-    ssearch.merge_regions(strategy=(0,0,1,0),img_area=img.shape[0]*img.shape[1],nregions=50)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    ssearch.merge_regions(strategy=(0,0,0,1),img_area=img.shape[0]*img.shape[1],nregions=200)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    ssearch.merge_regions(strategy=(1,1,0,0),img_area=img.shape[0]*img.shape[0],nregions=150)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    ssearch.merge_regions(strategy=(1,0,1,0),img_area=img.shape[0]*img.shape[0],nregions=150)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    ssearch.merge_regions(strategy=(1,0,1,1),img_area=img.shape[0]*img.shape[0],nregions=32)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    #cv2.imwrite('Segmented_Image/Figure10_final_segment.png',segmented_img)
-    '''ssearch.merge_regions(strategy=(1,1,0,0),img_area=img.shape[0]*img.shape[0],nregions=35)
-    print(len(ssearch.list_comp))
-    segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
-    cv2.imshow('image',segmented_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()'''
