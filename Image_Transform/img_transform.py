@@ -225,8 +225,18 @@ class shear_transform:
                     elif(interpolation=='BILINEAR'):new_img[y,x]=_bilinear_interpolation(img,pos)
         return new_img
 if __name__=='__main__':
-    img=cv2.imread('Images/IMG_0851.JPG')
-    img=cv2.resize(img,(400,400))
-    shear=shear_transform(img,(200,200),(1,0.25),interpolation='BILINEAR')
-    cv2.imshow('image',shear.transform_img)
+    img=cv2.imread('Images/Figure1.jpg')
+    #img=cv2.resize(img,(img.shape[1]//2,img.shape[0]//2))
+    rot=rotation_transform(img,(img.shape[0]//2,img.shape[1]//2),45,interpolation='BILINEAR')
+    img1=rot._tobox()
+    rot=rotation_transform(img1,(img1.shape[0]//2,img1.shape[1]//2),-45,interpolation='BILINEAR')
+    new_img=cv2.Scharr(rot.rot_img,cv2.CV_32F,0,1)
+    new_size=rot.rot_img.shape
+    old_size=img.shape
+    offset_0=(new_size[0]-old_size[0])//2
+    offset_1=(new_size[1]-old_size[1])//2
+    crop=new_img[offset_0:rot.rot_img.shape[0]-offset_0,offset_1:rot.rot_img.shape[1]-offset_1,:]
+    cv2.imshow('image',crop)
     cv2.waitKey(0)
+    '''cv2.imshow('image',rot._tobox())
+    cv2.waitKey(0)'''

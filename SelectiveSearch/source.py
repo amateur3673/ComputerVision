@@ -394,11 +394,13 @@ def initial_segment(list_comp,img_shape):
     '''
     Initialize the segmented image, based on list of components
     '''
-    color=np.array([[10,10,250],[10,250,10],[250,10,10],[120,120,120],[120,40,230],[40,120,230],[230,40,120],[80,150,130],[130,60,70]])
+    np.random.seed(10000)
+    # color=np.array([[10,10,250],[10,250,10],[250,10,10],[120,120,120],[120,40,230],[40,120,230],[230,40,120],[80,150,130],[130,60,70]])
     segmented_img=np.zeros((img_shape[0],img_shape[1],3)).astype(np.uint8)
     for idx,component in enumerate(list_comp):
+        color=np.random.randint(low=0,high=255,size=(3,))
         for pos in component:
-            segmented_img[pos[0],pos[1]]=color[idx%len(color)]
+            segmented_img[pos[0],pos[1]]=color
     return segmented_img
 def find_neighbors(img_comp,max_numb):
     '''
@@ -448,7 +450,7 @@ if __name__=='__main__':
     cv2.imshow('image',segmented_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.imwrite('Figure10_first_segment.png',segmented_img)
+    cv2.imwrite('Segmented_Image/Figure10_first_segment.png',segmented_img)
 
     ssearch.merge_regions(strategy=(0,0,1,0),img_area=img.shape[0]*img.shape[1],nregions=50)
     print(len(ssearch.list_comp))
@@ -474,13 +476,13 @@ if __name__=='__main__':
     cv2.imshow('image',segmented_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    ssearch.merge_regions(strategy=(1,0,1,1),img_area=img.shape[0]*img.shape[0],nregions=35)
+    ssearch.merge_regions(strategy=(1,0,1,1),img_area=img.shape[0]*img.shape[0],nregions=32)
     print(len(ssearch.list_comp))
     segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
     cv2.imshow('image',segmented_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.imwrite('Figure1_final_segment.png',segmented_img)
+    #cv2.imwrite('Segmented_Image/Figure10_final_segment.png',segmented_img)
     '''ssearch.merge_regions(strategy=(1,1,0,0),img_area=img.shape[0]*img.shape[0],nregions=35)
     print(len(ssearch.list_comp))
     segmented_img=initial_segment(ssearch.list_comp,img_shape=(img.shape[0],img.shape[1]))
