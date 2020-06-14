@@ -15,6 +15,6 @@ Repo structure:
 
 In this repo, i don't use data augmentation like the original paper, and achives around 85% accuracy on test set (still overfitting).
 
-Although i increasing the depth of the network, Resnet-38 still slightly outperformed the 20-layer version.
+Although i increase the depth of the network, Resnet-38 still slightly outperformed the 20-layer version.
 
 ________
