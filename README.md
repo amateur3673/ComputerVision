@@ -7,3 +7,4 @@
 4. **ImageTransform**: Basic image transformation (resize, rotation, scale and shear).
 5. **SelectiveSearch**: Selective Search Segmentation (2013) by J.R.R. Uijlings, K.E.A. van de Sande, T. Gevers, A.W.M. Smeulders for creating proposal regions in object detection.
 6. **Neural Style Transfer**: Neural Style Transfer algorithm (2015) by Leon A. Gatys, Alexander S. Ecker, Matthias Bethge for creating artistic picture.
+7. **ResNet**: Deep Residual Learning for Image Recognition by Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun, 2016, one of the most-used network architecture.
