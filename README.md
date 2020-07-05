@@ -9,3 +9,4 @@
 6. **Neural Style Transfer**: Neural Style Transfer algorithm (2015) by Leon A. Gatys, Alexander S. Ecker, Matthias Bethge for creating artistic picture.
 7. **ResNet**: Deep Residual Learning for Image Recognition by Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun, 2016, one of the most-used network architecture.
 8. **DenseNet**: Densely Connected Convolutional Networks by Gao Huang, Zhuang Liu, Kilian Q. Weinberger, and Laurens van der Maaten, 2017, **best paper award** in CVPR 2017.
+9. **EfficientNet**: EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks, 2020 by **Mixing Tan** and **Quoc V. Le**.
